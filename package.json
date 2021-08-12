@@ -4,7 +4,7 @@
   "description": "image crawler",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest --watchAll",
     "build": "npx tsc --build",
     "serve": "npx ts-node-dev src/index.ts",
     "dev": "npx ts-node-dev --respawn src/index.ts"
@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/rulewrite/img-crawler#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.4.13",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   }
