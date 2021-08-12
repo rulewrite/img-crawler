@@ -1,11 +1,7 @@
-import axios from 'axios';
+import * as puppeteer from 'puppeteer';
 import { getArguments, getHtml } from '../src/util';
 
-jest.mock('axios');
-
-beforeEach(() => {
-  jest.resetAllMocks();
-});
+jest.mock('puppeteer');
 
 test('node 인자 가져오기', () => {
   const expected = ['arg1', 'arg2'];
@@ -15,10 +11,15 @@ test('node 인자 가져오기', () => {
 });
 
 test('html 가져오기', async () => {
-  const data = '<html></html>';
+  const expectedHtml = '<html></html>';
 
-  axios.get = jest.fn().mockResolvedValue({ data });
-  const response = await getHtml('');
+  (puppeteer as any).launch = jest.fn().mockResolvedValue({
+    newPage: () => ({
+      goto: () => {},
+      content: () => expectedHtml,
+    }),
+  });
 
-  expect(response).toEqual(data);
+  const html = await getHtml('https://dummy.dummy');
+  expect(html).toEqual(expectedHtml);
 });
