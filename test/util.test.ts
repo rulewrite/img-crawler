@@ -24,11 +24,14 @@ test('html 가져오기', async () => {
   expect(html).toEqual(expectedHtml);
 });
 
-test('elements 가져오기', async () => {
+test('elements 가져오기', () => {
+  const expectedLength = 2;
   const elements = getElements(
-    '<html><body><div class="dummy"><img /><img /></div></body></html>',
+    `<html><body><div class="dummy">${new Array(expectedLength)
+      .fill('<img />')
+      .join('')}</div></body></html>`,
     '.dummy img'
   );
 
-  expect(elements.length).toEqual(2);
+  expect(elements.length).toEqual(expectedLength);
 });
