@@ -1,3 +1,4 @@
+import * as cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
 
 export const getArguments = () => {
@@ -14,4 +15,11 @@ export const getHtml = async (url: string) => {
   } catch (error) {
     return '';
   }
+};
+
+export const getElements = (html: string, selector: string) => {
+  const $ = cheerio.load(html);
+  return $(selector)
+    .toArray()
+    .map((element) => $(element));
 };
