@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import isRelativeUrl = require('is-relative-url');
 import * as puppeteer from 'puppeteer';
 
 export const getArguments = () => {
@@ -22,4 +23,16 @@ export const getElements = (html: string, selector: string) => {
   return $(selector)
     .toArray()
     .map((element) => $(element));
+};
+
+export const convertAbsoluteUrls = (url: string, origin: string) => {
+  if (!isRelativeUrl(url)) {
+    return url;
+  }
+
+  if (url[0] === '/') {
+    return origin + url;
+  }
+
+  return `${origin}/${url}`;
 };

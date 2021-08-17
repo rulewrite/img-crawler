@@ -1,5 +1,10 @@
 import * as puppeteer from 'puppeteer';
-import { getArguments, getHtml, getElements } from '../src/util';
+import {
+  getArguments,
+  getHtml,
+  getElements,
+  convertAbsoluteUrls,
+} from '../src/util';
 
 jest.mock('puppeteer');
 
@@ -34,4 +39,22 @@ test('elements 가져오기', () => {
   );
 
   expect(elements.length).toEqual(expectedLength);
+});
+
+describe('절대 경로 반환하는 모듈', () => {
+  const origin = 'https://dummy.dummy';
+  const relativeUrl = 'relative';
+  const expectedUrl = `${origin}/${relativeUrl}`;
+
+  test('상대 경로를 절대 경로로 변경하기', () => {
+    expect(convertAbsoluteUrls(relativeUrl, origin)).toEqual(expectedUrl);
+  });
+
+  test("'/' 붙은 상대 경로를 절대 경로로 변경하기", () => {
+    expect(convertAbsoluteUrls(`/${relativeUrl}`, origin)).toEqual(expectedUrl);
+  });
+
+  test('절대 경로는 그대로 반환', () => {
+    expect(convertAbsoluteUrls(expectedUrl, origin)).toEqual(expectedUrl);
+  });
 });

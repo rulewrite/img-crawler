@@ -1,4 +1,9 @@
-import { getArguments, getElements, getHtml } from './util';
+import {
+  getArguments,
+  getElements,
+  getHtml,
+  convertAbsoluteUrls,
+} from './util';
 
 (async () => {
   const [url, selector] = getArguments();
@@ -23,6 +28,13 @@ import { getArguments, getElements, getHtml } from './util';
     console.error('엘리먼트를 찾지 못했습니다. selector를 다시 확인해주세요.');
     return;
   }
+
+  const origin = new URL(url).origin;
+  const srcs = elements
+    .map((element) => element.attr('src'))
+    .map((src) => convertAbsoluteUrls(src, origin));
+
+  console.log(srcs);
 })().finally(() => {
   process.exit();
 });
