@@ -1,7 +1,7 @@
 import {
   getArguments,
   getElements,
-  getHtml,
+  getContents,
   convertAbsoluteUrls,
 } from './util';
 
@@ -17,7 +17,7 @@ import {
     return;
   }
 
-  const html = await getHtml(url);
+  const { title, html } = await getContents(url);
   if (!html.length) {
     console.error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');
     return;

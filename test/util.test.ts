@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer';
 import {
   getArguments,
-  getHtml,
+  getContents,
   getElements,
   convertAbsoluteUrls,
   getFilename,
@@ -16,18 +16,22 @@ test('node 인자 가져오기', () => {
   expect(getArguments()).toEqual(expect.arrayContaining(expected));
 });
 
-test('html 가져오기', async () => {
-  const expectedHtml = '<html></html>';
+test('컨텐츠 가져오기', async () => {
+  const title = 'isTitle';
+  const html = `<html><title>${title}</title></html>`;
 
   (puppeteer as any).launch = jest.fn().mockResolvedValue({
     newPage: () => ({
       goto: () => {},
-      content: () => expectedHtml,
+      content: () => html,
+      title: () => title,
     }),
   });
 
-  const html = await getHtml('https://dummy.dummy');
-  expect(html).toEqual(expectedHtml);
+  expect(await getContents('https://dummy.dummy')).toEqual({
+    title,
+    html,
+  });
 });
 
 test('elements 가져오기', () => {

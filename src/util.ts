@@ -6,15 +6,18 @@ export const getArguments = () => {
   return process.argv.slice(2);
 };
 
-export const getHtml = async (url: string) => {
+export const getContents = async (url: string) => {
   try {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
 
-    return await page.content();
+    return {
+      title: await page.title(),
+      html: await page.content(),
+    };
   } catch (error) {
-    return '';
+    return { title: '', html: '' };
   }
 };
 
