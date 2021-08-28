@@ -3,8 +3,10 @@ import {
   getElements,
   getContents,
   convertAbsoluteUrls,
+  getFilename,
 } from './util';
 import * as fs from 'node:fs';
+import axios from 'axios';
 
 (async () => {
   const [url, selector] = getArguments();
@@ -35,11 +37,23 @@ import * as fs from 'node:fs';
     .map((element) => element.attr('src'))
     .map((src) => convertAbsoluteUrls(src, urlInstance));
 
-  console.log(srcs);
   const directory = `./${title}`;
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory);
   }
+
+  await Promise.all(
+    srcs.map(async (src, index) => {
+      const response = await axios.get(src, {
+        responseType: 'arraybuffer',
+      });
+
+      fs.writeFileSync(
+        `${directory}/${index + 1}-${getFilename(src)}`,
+        response.data
+      );
+    })
+  );
 })().finally(() => {
   process.exit();
 });
