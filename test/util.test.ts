@@ -77,3 +77,10 @@ test('파일명 가져오는 모듈', () => {
 
   expect(getFilename(url)).toEqual(filename);
 });
+
+test('시간 정보 가져오는 모듈', () => {
+  getTime('!')
+    .split('!')
+    .map((time) => Number(time))
+    .forEach((time) => expect(Number.isInteger(time)).toEqual(true));
+});

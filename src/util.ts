@@ -49,3 +49,15 @@ export const convertAbsoluteUrls = (src: string, url: URL) => {
 export const getFilename = (url: string) => {
   return String(url.split('/').slice(-1));
 };
+
+export const getTime = (coupler = '-') => {
+  const date = new Date();
+  return [
+    date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+  ].join(coupler);
+};
