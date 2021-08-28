@@ -4,6 +4,7 @@ import {
   getContents,
   convertAbsoluteUrls,
 } from './util';
+import * as fs from 'node:fs';
 
 (async () => {
   const [url, selector] = getArguments();
@@ -35,6 +36,10 @@ import {
     .map((src) => convertAbsoluteUrls(src, urlInstance));
 
   console.log(srcs);
+  const directory = `./${title}`;
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory);
+  }
 })().finally(() => {
   process.exit();
 });
