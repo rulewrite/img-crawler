@@ -25,18 +25,18 @@ export const getElements = (html: string, selector: string) => {
     .map((element) => $(element));
 };
 
-export const convertAbsoluteUrls = (url: string, origin: string) => {
-  if (!isRelativeUrl(url)) {
-    return url;
+export const convertAbsoluteUrls = (src: string, { origin }: URL) => {
+  if (!isRelativeUrl(src)) {
+    return src;
   }
 
-  if (url[0] === '/') {
-    return origin + url;
+  if (src[0] === '/') {
+    return origin + src;
   }
 
-  if (url.slice(0, 2) === './') {
-    return origin + url.slice(1);
+  if (src.slice(0, 2) === './') {
+    return origin + src.slice(1);
   }
 
-  return `${origin}/${url}`;
+  return `${origin}/${src}`;
 };

@@ -42,25 +42,23 @@ test('elements 가져오기', () => {
 });
 
 describe('절대 경로 반환하는 모듈', () => {
-  const origin = 'https://dummy.dummy';
+  const url = new URL('https://dummy.dummy');
   const relativeUrl = 'relative';
-  const expectedUrl = `${origin}/${relativeUrl}`;
+  const expectedUrl = `${url.origin}/${relativeUrl}`;
 
   test('상대 경로를 절대 경로로 변경하기', () => {
-    expect(convertAbsoluteUrls(relativeUrl, origin)).toEqual(expectedUrl);
+    expect(convertAbsoluteUrls(relativeUrl, url)).toEqual(expectedUrl);
   });
 
   test("'/' 붙은 상대 경로를 절대 경로로 변경하기", () => {
-    expect(convertAbsoluteUrls(`/${relativeUrl}`, origin)).toEqual(expectedUrl);
+    expect(convertAbsoluteUrls(`/${relativeUrl}`, url)).toEqual(expectedUrl);
   });
 
   test("'./' 붙은 상대 경로를 절대 경로로 변경하기", () => {
-    expect(convertAbsoluteUrls(`./${relativeUrl}`, origin)).toEqual(
-      expectedUrl
-    );
+    expect(convertAbsoluteUrls(`./${relativeUrl}`, url)).toEqual(expectedUrl);
   });
 
   test('절대 경로는 그대로 반환', () => {
-    expect(convertAbsoluteUrls(expectedUrl, origin)).toEqual(expectedUrl);
+    expect(convertAbsoluteUrls(expectedUrl, url)).toEqual(expectedUrl);
   });
 });

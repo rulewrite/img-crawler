@@ -29,10 +29,10 @@ import {
     return;
   }
 
-  const origin = new URL(url).origin;
+  const urlInstance = new URL(url);
   const srcs = elements
     .map((element) => element.attr('src'))
-    .map((src) => convertAbsoluteUrls(src, origin));
+    .map((src) => convertAbsoluteUrls(src, urlInstance));
 
   console.log(srcs);
 })().finally(() => {
