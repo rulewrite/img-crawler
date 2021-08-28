@@ -6,6 +6,7 @@ import {
   getFilename,
   getTime,
   ZeroPad,
+  makeDirectory,
 } from './util';
 import * as fs from 'node:fs';
 import axios from 'axios';
@@ -65,9 +66,7 @@ import axios from 'axios';
     }
 
     const directory = `${rootDirectory}/${zeroPaddedIndex}`;
-    if (!fs.existsSync(directory)) {
-      fs.mkdirSync(directory, { recursive: true });
-    }
+    makeDirectory(directory);
 
     await Promise.all(
       srcs.map(async (src, index) => {

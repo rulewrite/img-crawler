@@ -1,3 +1,4 @@
+import * as fs from 'node:fs';
 import * as cheerio from 'cheerio';
 import isRelativeUrl = require('is-relative-url');
 import * as puppeteer from 'puppeteer';
@@ -77,3 +78,11 @@ export class ZeroPad {
     return numString;
   }
 }
+
+export const makeDirectory = (path: string) => {
+  if (fs.existsSync(path)) {
+    return;
+  }
+
+  fs.mkdirSync(path, { recursive: true });
+};
