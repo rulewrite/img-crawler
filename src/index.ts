@@ -47,7 +47,7 @@ import axios from 'axios';
   let rootDirectory = '';
   for (let index = startNumber; index <= endNumber; index++) {
     const zeroPaddedIndex = zeroPad.get(index);
-    const currentUrl = url.replaceAll('{replace}', zeroPaddedIndex);
+    const currentUrl = url.replaceAll('{%}', zeroPaddedIndex);
     const { title, html } = await getContents(currentUrl);
 
     if (!html.length) {
