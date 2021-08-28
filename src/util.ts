@@ -61,3 +61,19 @@ export const getTime = (coupler = '-') => {
     date.getSeconds(),
   ].join(coupler);
 };
+
+export class ZeroPad {
+  private size = 0;
+  number = 0;
+
+  constructor(formatted: string, keyword = '$') {
+    this.size = formatted.length;
+    this.number = Number(formatted.replaceAll(keyword, '0'));
+  }
+
+  get(num: number): string {
+    let numString = num.toString();
+    while (numString.length < this.size) numString = '0' + numString;
+    return numString;
+  }
+}
