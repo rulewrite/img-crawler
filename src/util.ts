@@ -25,7 +25,8 @@ export const getElements = (html: string, selector: string) => {
     .map((element) => $(element));
 };
 
-export const convertAbsoluteUrls = (src: string, { origin }: URL) => {
+export const convertAbsoluteUrls = (src: string, url: URL) => {
+  const { origin, pathname } = url;
   if (!isRelativeUrl(src)) {
     return src;
   }
@@ -34,9 +35,10 @@ export const convertAbsoluteUrls = (src: string, { origin }: URL) => {
     return origin + src;
   }
 
+  const path = pathname.split('/').slice(0, -1).join('/');
   if (src.slice(0, 2) === './') {
-    return origin + src.slice(1);
+    return `${origin}${path}${src.slice(1)}`;
   }
 
-  return `${origin}/${src}`;
+  return `${origin}${path}/${src}`;
 };
