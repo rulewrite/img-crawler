@@ -42,3 +42,7 @@ export const convertAbsoluteUrls = (src: string, url: URL) => {
 
   return `${origin}${path}/${src}`;
 };
+
+export const getFilename = (url: string) => {
+  return String(url.split('/').slice(-1));
+};
