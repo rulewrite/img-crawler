@@ -12,7 +12,14 @@ import * as fs from 'node:fs';
 import axios from 'axios';
 
 (async () => {
-  const [url, selector, start = '1', end = 'Infinity'] = getArguments();
+  const [
+    url,
+    selector,
+    start = '1',
+    end = 'Infinity',
+    isEachDirectoryString = 'true',
+  ] = getArguments();
+  const isEachDirectory = isEachDirectoryString === 'true';
   const zeroPad = new ZeroPad(start);
   const startNumber = zeroPad.NUMBER;
   const endNumber = new ZeroPad(end).NUMBER;
@@ -63,10 +70,16 @@ import axios from 'axios';
 
     if (index === startNumber) {
       rootDirectory = `./${title}-${getTime()}`;
+      makeDirectory(rootDirectory);
     }
 
-    const directory = `${rootDirectory}/${zeroPaddedIndex}`;
-    makeDirectory(directory);
+    const directory = isEachDirectory
+      ? `${rootDirectory}/${zeroPaddedIndex}`
+      : rootDirectory;
+
+    if (isEachDirectory) {
+      makeDirectory(directory);
+    }
 
     await Promise.all(
       srcs.map(async (src, index) => {
