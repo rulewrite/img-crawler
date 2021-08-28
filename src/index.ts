@@ -73,22 +73,20 @@ import axios from 'axios';
       makeDirectory(rootDirectory);
     }
 
-    const directory = isEachDirectory
-      ? `${rootDirectory}/${zeroPaddedIndex}`
-      : rootDirectory;
-
+    let directory = rootDirectory;
     if (isEachDirectory) {
+      directory += `/${zeroPaddedIndex}`;
       makeDirectory(directory);
     }
 
     await Promise.all(
-      srcs.map(async (src, index) => {
+      srcs.map(async (src, imgIndex) => {
         const response = await axios.get(src, {
           responseType: 'arraybuffer',
         });
 
         fs.writeFileSync(
-          `${directory}/${index + 1}-${getFilename(src)}`,
+          `${directory}/${index}-${imgIndex + 1}-${getFilename(src)}`,
           response.data
         );
       })
