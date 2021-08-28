@@ -54,6 +54,12 @@ describe('절대 경로 반환하는 모듈', () => {
     expect(convertAbsoluteUrls(`/${relativeUrl}`, origin)).toEqual(expectedUrl);
   });
 
+  test("'./' 붙은 상대 경로를 절대 경로로 변경하기", () => {
+    expect(convertAbsoluteUrls(`./${relativeUrl}`, origin)).toEqual(
+      expectedUrl
+    );
+  });
+
   test('절대 경로는 그대로 반환', () => {
     expect(convertAbsoluteUrls(expectedUrl, origin)).toEqual(expectedUrl);
   });

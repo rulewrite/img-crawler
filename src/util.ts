@@ -34,5 +34,9 @@ export const convertAbsoluteUrls = (url: string, origin: string) => {
     return origin + url;
   }
 
+  if (url.slice(0, 2) === './') {
+    return origin + url.slice(1);
+  }
+
   return `${origin}/${url}`;
 };
