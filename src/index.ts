@@ -64,7 +64,7 @@ import axios from 'axios';
       rootDirectory = `./${title}-${getTime()}`;
     }
 
-    const directory = `${rootDirectory}/${zeroPaddedIndex}-${title}`;
+    const directory = `${rootDirectory}/${zeroPaddedIndex}`;
     if (!fs.existsSync(directory)) {
       fs.mkdirSync(directory, { recursive: true });
     }
