@@ -88,10 +88,10 @@ test('시간 정보 가져오는 모듈', () => {
 
 describe('0 붙은 숫자 만들어주는 모듈', () => {
   const num = 11;
-  const zeroPad = new ZeroPad(`$$${num}`, '$');
+  const zeroPad = new ZeroPad(`##${num}`, '#');
 
   test('숫자 정보', () => {
-    expect(zeroPad.number).toEqual(num);
+    expect(zeroPad.NUMBER).toEqual(num);
   });
 
   test('1 -> 0001', () => {

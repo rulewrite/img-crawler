@@ -13,8 +13,8 @@ import axios from 'axios';
 (async () => {
   const [url, selector, start = '1', end = 'Infinity'] = getArguments();
   const zeroPad = new ZeroPad(start);
-  const startNumber = zeroPad.number;
-  const endNumber = new ZeroPad(end).number;
+  const startNumber = zeroPad.NUMBER;
+  const endNumber = new ZeroPad(end).NUMBER;
 
   if (Number.isNaN(endNumber) || Number.isNaN(startNumber)) {
     console.error('페이지 번호가 올바르지 않습니다.');

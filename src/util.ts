@@ -64,11 +64,11 @@ export const getTime = (coupler = '-') => {
 
 export class ZeroPad {
   private size = 0;
-  number = 0;
+  readonly NUMBER: number;
 
-  constructor(formatted: string, keyword = '$') {
+  constructor(formatted: string, keyword = '#') {
     this.size = formatted.length;
-    this.number = Number(formatted.replaceAll(keyword, '0'));
+    this.NUMBER = Number(formatted.replaceAll(keyword, '0'));
   }
 
   get(num: number): string {
