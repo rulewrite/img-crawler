@@ -5,14 +5,16 @@ import {
   convertAbsoluteUrls,
   getFilename,
   getTime,
+  ZeroPad,
 } from './util';
 import * as fs from 'node:fs';
 import axios from 'axios';
 
 (async () => {
   const [url, selector, start = '1', end = 'Infinity'] = getArguments();
-  const startNumber = Number(start);
-  const endNumber = Number(end);
+  const zeroPad = new ZeroPad(start);
+  const startNumber = zeroPad.number;
+  const endNumber = new ZeroPad(end).number;
 
   if (Number.isNaN(endNumber) || Number.isNaN(startNumber)) {
     console.error('페이지 번호가 올바르지 않습니다.');
@@ -36,7 +38,8 @@ import axios from 'axios';
 
   let rootDirectory = '';
   for (let index = startNumber; index <= endNumber; index++) {
-    const currentUrl = url.replaceAll('{replace}', String(index));
+    const zeroPaddedIndex = zeroPad.get(index);
+    const currentUrl = url.replaceAll('{replace}', zeroPaddedIndex);
     const { title, html } = await getContents(currentUrl);
 
     if (!html.length) {
@@ -61,7 +64,7 @@ import axios from 'axios';
       rootDirectory = `./${title}-${getTime()}`;
     }
 
-    const directory = `${rootDirectory}/${index}-${title}`;
+    const directory = `${rootDirectory}/${zeroPaddedIndex}-${title}`;
     if (!fs.existsSync(directory)) {
       fs.mkdirSync(directory, { recursive: true });
     }
