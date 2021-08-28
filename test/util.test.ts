@@ -5,6 +5,7 @@ import {
   getElements,
   convertAbsoluteUrls,
   getFilename,
+  getTime,
 } from '../src/util';
 
 jest.mock('puppeteer');
@@ -70,11 +71,9 @@ describe('절대 경로 반환하는 모듈', () => {
   });
 });
 
-describe('파일명 가져오는 모듈', () => {
+test('파일명 가져오는 모듈', () => {
   const filename = 'file.name.jpg';
   const url = `https://dummy.dumb/path/path/${filename}`;
 
-  test('절대 경로는 그대로 반환', () => {
-    expect(getFilename(url)).toEqual(filename);
-  });
+  expect(getFilename(url)).toEqual(filename);
 });
