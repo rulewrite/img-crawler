@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "lib": ["ESNext", "WebWorker"]
+    "lib": ["ESNext", "dom"]
   }
 }
