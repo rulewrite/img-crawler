@@ -4,10 +4,10 @@
   "description": "image crawler",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest --watchAll",
-    "build": "npx tsc --build",
-    "serve": "npx ts-node-dev src/index.ts",
-    "dev": "npx ts-node-dev --respawn src/index.ts"
+    "test": "jest --watchAll",
+    "build": "tsc --build",
+    "serve": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev --respawn src/index.ts"
   },
   "repository": {
     "type": "git",
