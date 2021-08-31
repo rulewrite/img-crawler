@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import isRelativeUrl = require('is-relative-url');
 import * as puppeteer from 'puppeteer';
