@@ -11,6 +11,8 @@ import {
 import * as fs from 'fs';
 import axios from 'axios';
 
+const urlReplaceKeyword = '{%}';
+
 (async () => {
   const [
     url,
@@ -19,20 +21,6 @@ import axios from 'axios';
     end = 'Infinity',
     isEachDirectoryString = 'true',
   ] = getArguments();
-  const isEachDirectory = isEachDirectoryString === 'true';
-  const zeroPad = new ZeroPad(start);
-  const startNumber = zeroPad.NUMBER;
-  const endNumber = new ZeroPad(end).NUMBER;
-
-  if (Number.isNaN(endNumber) || Number.isNaN(startNumber)) {
-    console.error('페이지 번호가 올바르지 않습니다.');
-    return;
-  }
-
-  if (endNumber < startNumber) {
-    console.error('종료 번호가 시작 번호보다 작을 수 없습니다.');
-    return;
-  }
 
   if (!url) {
     console.error('url이 없습니다.');
@@ -44,10 +32,27 @@ import axios from 'axios';
     return;
   }
 
+  const isLoop = url.includes(urlReplaceKeyword);
+  const isEachDirectory = isLoop && isEachDirectoryString === 'true';
+
+  const zeroPad = new ZeroPad(isLoop ? start : '1');
+  const startNumber = zeroPad.NUMBER;
+  const endNumber = new ZeroPad(isLoop ? end : '1').NUMBER;
+
+  if (Number.isNaN(endNumber) || Number.isNaN(startNumber)) {
+    console.error('페이지 번호가 올바르지 않습니다.');
+    return;
+  }
+
+  if (endNumber < startNumber) {
+    console.error('종료 번호가 시작 번호보다 작을 수 없습니다.');
+    return;
+  }
+
   let rootDirectory = '';
   for (let index = startNumber; index <= endNumber; index++) {
     const zeroPaddedIndex = zeroPad.get(index);
-    const currentUrl = url.replaceAll('{%}', zeroPaddedIndex);
+    const currentUrl = url.replaceAll(urlReplaceKeyword, zeroPaddedIndex);
     const { title, html } = await getContents(currentUrl);
 
     if (!html.length) {
