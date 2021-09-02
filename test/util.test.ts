@@ -1,4 +1,3 @@
-import * as puppeteer from 'puppeteer';
 import {
   getArguments,
   getContents,
@@ -9,8 +8,6 @@ import {
   ZeroPad,
 } from '../src/util';
 
-jest.mock('puppeteer');
-
 test('node 인자 가져오기', () => {
   const expected = ['arg1', 'arg2'];
   process.argv = ['execute node path', 'execute js file', ...expected];
@@ -18,21 +15,34 @@ test('node 인자 가져오기', () => {
   expect(getArguments()).toEqual(expect.arrayContaining(expected));
 });
 
-test('컨텐츠 가져오기', async () => {
-  const title = 'isTitle';
-  const html = `<html><title>${title}</title></html>`;
+describe('컨텐츠 받아오기', () => {
+  const validUrl = 'https://google.com';
 
-  (puppeteer as any).launch = jest.fn().mockResolvedValue({
-    newPage: () => ({
-      goto: () => {},
-      content: () => html,
-      title: () => title,
-    }),
+  describe('성공', () => {
+    test('구글 html 로드', async () => {
+      const { title } = await getContents(validUrl);
+      expect(Boolean(title.length)).toEqual(true);
+    });
   });
 
-  expect(await getContents('https://dummy.dummy')).toEqual({
-    title,
-    html,
+  describe('실패', () => {
+    const notValidUrlSegment = 'dddddddasscsccsasscas';
+    const defaultContents = {
+      title: '',
+      html: '',
+    };
+
+    test('존재하지 않는 사이트', async () => {
+      await expect(
+        getContents(`https://${notValidUrlSegment}.com`)
+      ).resolves.toEqual(defaultContents);
+    });
+
+    test('존재하지 않는 페이지', async () => {
+      await expect(
+        getContents(`${validUrl}/${notValidUrlSegment}`)
+      ).resolves.toEqual(defaultContents);
+    });
   });
 });
 
