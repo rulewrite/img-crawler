@@ -11,13 +11,17 @@ export const getContents = async (url: string) => {
   try {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto(url);
+    const isOk = (await page.goto(url)).ok();
+
+    if (!isOk) {
+      throw new Error();
+    }
 
     return {
       title: await page.title(),
       html: await page.content(),
     };
-  } catch (error) {
+  } catch {
     return { title: '', html: '' };
   }
 };
