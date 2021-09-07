@@ -41,7 +41,7 @@ import Range from './Range';
       return;
     }
 
-    const urlInstance = new window.URL(url);
+    const urlInstance = new URL(url);
     const srcs = elements
       .map((element) => element.attr('src'))
       .map((src) => convertAbsoluteUrls(src, urlInstance));
