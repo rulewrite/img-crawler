@@ -17,7 +17,7 @@ describe('컨텐츠 받아오기', () => {
   });
 
   describe('실패', () => {
-    const notValidUrlSegment = 'dddddddasscsccsasscas';
+    const notValidUrlSegment = `dummy-${Date.now()}`;
     const defaultContents = {
       title: '',
       html: '',
