@@ -1,15 +1,10 @@
-import {
-  getElements,
-  convertAbsoluteUrls,
-  getFilename,
-  getTime,
-  makeDirectory,
-} from './util';
+import { getFilename, getTime, makeDirectory } from './util';
 import * as fs from 'fs';
 import axios from 'axios';
 import Argument from './Argument';
 import Traveler from './Traveler';
 import Range from './Range';
+import ImgSrcCollection from './ImgSrcCollection';
 
 (async () => {
   const { QUERY, ...argument } = new Argument();
@@ -33,19 +28,6 @@ import Range from './Range';
       return;
     }
 
-    const elements = getElements(html, QUERY);
-    if (!elements.length) {
-      console.error(
-        '엘리먼트를 찾지 못했습니다. selector를 다시 확인해주세요.'
-      );
-      return;
-    }
-
-    const urlInstance = new URL(url);
-    const srcs = elements
-      .map((element) => element.attr('src'))
-      .map((src) => convertAbsoluteUrls(src, urlInstance));
-
     if (isFirst) {
       rootDirectory = `./${title}-${getTime()}`;
       makeDirectory(rootDirectory);
@@ -57,8 +39,10 @@ import Range from './Range';
       makeDirectory(directory);
     }
 
+    const imgSrcCollection = new ImgSrcCollection(url, html, QUERY);
+
     await Promise.all(
-      srcs.map(async (src, imgIndex) => {
+      imgSrcCollection.map(async (src, imgIndex) => {
         const response = await axios.get(src, {
           responseType: 'arraybuffer',
         });
