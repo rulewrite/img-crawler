@@ -22,11 +22,11 @@ export default class Range {
   constructor(
     private readonly URL: string,
     range: string,
-    nestedDirectory: boolean
+    singleDirectory: boolean
   ) {
     const isLoop = URL.includes(Range.REPLACE_KEYWORD);
 
-    this.IS_NESTED_DIRECTORY = isLoop && nestedDirectory;
+    this.IS_NESTED_DIRECTORY = isLoop && !singleDirectory;
     [this.START, this.END] = isLoop ? Range.parse(range) : Range.SINGLE;
 
     if (Number.isNaN(this.START.NUMBER) || Number.isNaN(this.END)) {

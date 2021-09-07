@@ -17,7 +17,7 @@ import Range from './Range';
   const range = new Range(
     argument.URL,
     argument.RANGE,
-    argument.NESTED_DIRECTORY
+    argument.SINGLE_DIRECTORY
   );
   const { IS_NESTED_DIRECTORY } = range;
 

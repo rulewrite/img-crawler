@@ -6,14 +6,14 @@ interface OptionValues {
   url: Argument['URL'];
   query: Argument['QUERY'];
   range: Argument['RANGE'];
-  nestedDirectory: Argument['NESTED_DIRECTORY'];
+  singleDirectory: Argument['SINGLE_DIRECTORY'] | undefined;
 }
 
 export default class Argument {
   readonly URL: string;
   readonly QUERY: string;
   readonly RANGE: string;
-  readonly NESTED_DIRECTORY: boolean;
+  readonly SINGLE_DIRECTORY: boolean;
 
   constructor() {
     const { PLACEHOLDER } = ZeroPad;
@@ -39,16 +39,16 @@ export default class Argument {
         Range.DEFAULT
       )
       .option(
-        '-n, --no-nested-directory',
+        '-s, --single-directory',
         '이미지 파일을 같은 디렉토리에 저장합니다.\n순회하지 않을 경우 자동으로 한 디렉토리에 저장됩니다.'
       )
       .parse();
 
-    const { url, query, range, nestedDirectory } = program.opts<OptionValues>();
+    const { url, query, range, singleDirectory } = program.opts<OptionValues>();
 
     this.URL = url;
     this.QUERY = query;
     this.RANGE = range;
-    this.NESTED_DIRECTORY = nestedDirectory;
+    this.SINGLE_DIRECTORY = Boolean(singleDirectory);
   }
 }
