@@ -1,11 +1,12 @@
 export default class ZeroPad {
-  public static readonly DEFAULT_KEYWORD = '#';
+  public static readonly PLACEHOLDER = '#';
+
   private size = 0;
   readonly NUMBER: number;
 
-  constructor(formatted: string, keyword = ZeroPad.DEFAULT_KEYWORD) {
+  constructor(formatted: string) {
     this.size = formatted.length;
-    this.NUMBER = Number(formatted.replaceAll(keyword, '0'));
+    this.NUMBER = Number(formatted.replaceAll(ZeroPad.PLACEHOLDER, '0'));
   }
 
   get(num: number): string {

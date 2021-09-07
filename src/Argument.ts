@@ -26,7 +26,7 @@ export default class Argument {
   readonly IS_NESTED_DIRECTORY: boolean;
 
   constructor() {
-    const { DEFAULT_KEYWORD } = ZeroPad;
+    const { PLACEHOLDER } = ZeroPad;
 
     const program = new commander.Command();
     program
@@ -44,7 +44,7 @@ export default class Argument {
         new commander.Option(
           '-r, --range [start, end]',
           `순회 범위를 지정합니다.\n순회할 숫자가 001...999일 경우 '${
-            DEFAULT_KEYWORD + DEFAULT_KEYWORD
+            PLACEHOLDER + PLACEHOLDER
           }1, 999'로 표기하며\nurl에 치환 문자가 없을 경우 무시됩니다.`
         )
           .default(Argument.DEFAULT_RANGE, '"1, Infinity"')
