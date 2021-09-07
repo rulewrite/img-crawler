@@ -1,6 +1,5 @@
 import {
   getElements,
-  getContents,
   convertAbsoluteUrls,
   getFilename,
   getTime,
@@ -10,16 +9,20 @@ import {
 import * as fs from 'fs';
 import axios from 'axios';
 import Argument from './Argument';
+import Traveler from './Traveler';
 
 (async () => {
   const { URL: url, QUERY, START, END, IS_NESTED_DIRECTORY } = new Argument();
   const startNumber = START.NUMBER;
 
+  const traveler = new Traveler();
+  await traveler.launch();
+
   let rootDirectory = '';
   for (let index = startNumber; index <= END; index++) {
     const zeroPaddedIndex = START.get(index);
     const currentUrl = url.replaceAll(urlReplaceKeyword, zeroPaddedIndex);
-    const { title, html } = await getContents(currentUrl);
+    const { title, html } = await traveler.goto(currentUrl);
 
     if (!html.length) {
       console.error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');

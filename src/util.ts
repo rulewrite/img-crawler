@@ -1,28 +1,8 @@
 import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import isRelativeUrl = require('is-relative-url');
-import * as puppeteer from 'puppeteer';
 
 export const urlReplaceKeyword = '{%}';
-
-export const getContents = async (url: string) => {
-  try {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    const isOk = (await page.goto(url)).ok();
-
-    if (!isOk) {
-      throw new Error();
-    }
-
-    return {
-      title: await page.title(),
-      html: await page.content(),
-    };
-  } catch {
-    return { title: '', html: '' };
-  }
-};
 
 export const getElements = (html: string, selector: string) => {
   const $ = cheerio.load(html);

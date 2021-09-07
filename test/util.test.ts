@@ -1,41 +1,9 @@
 import {
-  getContents,
   getElements,
   convertAbsoluteUrls,
   getFilename,
   getTime,
 } from '../src/util';
-
-describe('컨텐츠 받아오기', () => {
-  const validUrl = 'https://google.com';
-
-  describe('성공', () => {
-    test('구글 html 로드', async () => {
-      const { title } = await getContents(validUrl);
-      expect(Boolean(title.length)).toEqual(true);
-    });
-  });
-
-  describe('실패', () => {
-    const notValidUrlSegment = 'dddddddasscsccsasscas';
-    const defaultContents = {
-      title: '',
-      html: '',
-    };
-
-    test('존재하지 않는 사이트', async () => {
-      await expect(
-        getContents(`https://${notValidUrlSegment}.com`)
-      ).resolves.toEqual(defaultContents);
-    });
-
-    test('존재하지 않는 페이지', async () => {
-      await expect(
-        getContents(`${validUrl}/${notValidUrlSegment}`)
-      ).resolves.toEqual(defaultContents);
-    });
-  });
-});
 
 test('elements 가져오기', () => {
   const expectedLength = 2;
