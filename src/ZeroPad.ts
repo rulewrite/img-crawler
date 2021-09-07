@@ -1,5 +1,5 @@
 export default class ZeroPad {
-  public static readonly PLACEHOLDER = '#';
+  static readonly PLACEHOLDER = '#';
 
   private size = 0;
   readonly NUMBER: number;

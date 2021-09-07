@@ -2,8 +2,8 @@ import { InvalidArgumentError } from 'commander';
 import ZeroPad from './ZeroPad';
 
 export default class Range {
-  public static readonly REPLACE_KEYWORD = '{%}';
-  public static readonly DEFAULT = '1, Infinity';
+  static readonly REPLACE_KEYWORD = '{%}';
+  static readonly DEFAULT = '1, Infinity';
 
   private static readonly SINGLE = [new ZeroPad('1'), 1] as const;
 
@@ -17,7 +17,7 @@ export default class Range {
 
   private readonly START: ZeroPad;
   private readonly END: number;
-  public readonly IS_NESTED_DIRECTORY: boolean;
+  readonly IS_NESTED_DIRECTORY: boolean;
 
   constructor(
     private readonly URL: string,
