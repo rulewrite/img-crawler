@@ -23,11 +23,6 @@ import ImgSrcCollection from './ImgSrcCollection';
   for (let { isFirst, index, zeroPaddedIndex, url } of range) {
     const { title, html } = await traveler.goto(url);
 
-    if (!html.length) {
-      console.error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');
-      return;
-    }
-
     if (isFirst) {
       rootDirectory = `./${title}-${getTime()}`;
       makeDirectory(rootDirectory);

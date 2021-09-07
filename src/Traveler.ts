@@ -14,25 +14,30 @@ export default class Traveler {
   }
 
   async goto(url: string) {
-    try {
-      const { page } = this;
-      const response = await page.goto(url);
-      const isOk = response.ok();
+    const { page } = this;
+    const response = await page.goto(url);
+    const isOk = response.ok();
 
-      if (!isOk) {
-        throw new Error();
-      }
-
-      return {
-        title: await page.title(),
-        html: await page.content(),
-      };
-    } catch {
-      return { title: '', html: '' };
+    if (!isOk) {
+      this.throwError();
     }
+
+    const html = await page.content();
+    if (!html.length) {
+      this.throwError();
+    }
+
+    return {
+      title: await page.title(),
+      html,
+    };
   }
 
   async close() {
     await this.browser?.close();
+  }
+
+  throwError() {
+    throw new Error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');
   }
 }
