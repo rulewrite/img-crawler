@@ -12,9 +12,15 @@ import Traveler from './Traveler';
 import Range from './Range';
 
 (async () => {
-  const { URL, QUERY, START, END, IS_NESTED_DIRECTORY } = new Argument();
+  const { QUERY, ...argument } = new Argument();
 
-  const range = new Range(URL, START, END);
+  const range = new Range(
+    argument.URL,
+    argument.RANGE,
+    argument.NESTED_DIRECTORY
+  );
+  const { IS_NESTED_DIRECTORY } = range;
+
   const traveler = new Traveler();
   await traveler.launch();
 
