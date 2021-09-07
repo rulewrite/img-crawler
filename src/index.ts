@@ -1,57 +1,23 @@
 import {
-  getArguments,
   getElements,
   getContents,
   convertAbsoluteUrls,
   getFilename,
   getTime,
-  ZeroPad,
   makeDirectory,
+  urlReplaceKeyword,
 } from './util';
 import * as fs from 'fs';
 import axios from 'axios';
-
-const urlReplaceKeyword = '{%}';
+import Argument from './Argument';
 
 (async () => {
-  const [
-    url,
-    selector,
-    start = '1',
-    end = 'Infinity',
-    isEachDirectoryString = 'true',
-  ] = getArguments();
-
-  if (!url) {
-    console.error('url이 없습니다.');
-    return;
-  }
-
-  if (!selector) {
-    console.error('selector가 없습니다.');
-    return;
-  }
-
-  const isLoop = url.includes(urlReplaceKeyword);
-  const isEachDirectory = isLoop && isEachDirectoryString === 'true';
-
-  const zeroPad = new ZeroPad(isLoop ? start : '1');
-  const startNumber = zeroPad.NUMBER;
-  const endNumber = new ZeroPad(isLoop ? end : '1').NUMBER;
-
-  if (Number.isNaN(endNumber) || Number.isNaN(startNumber)) {
-    console.error('페이지 번호가 올바르지 않습니다.');
-    return;
-  }
-
-  if (endNumber < startNumber) {
-    console.error('종료 번호가 시작 번호보다 작을 수 없습니다.');
-    return;
-  }
+  const { URL: url, QUERY, START, END, IS_NESTED_DIRECTORY } = new Argument();
+  const startNumber = START.NUMBER;
 
   let rootDirectory = '';
-  for (let index = startNumber; index <= endNumber; index++) {
-    const zeroPaddedIndex = zeroPad.get(index);
+  for (let index = startNumber; index <= END; index++) {
+    const zeroPaddedIndex = START.get(index);
     const currentUrl = url.replaceAll(urlReplaceKeyword, zeroPaddedIndex);
     const { title, html } = await getContents(currentUrl);
 
@@ -60,7 +26,7 @@ const urlReplaceKeyword = '{%}';
       return;
     }
 
-    const elements = getElements(html, selector);
+    const elements = getElements(html, QUERY);
     if (!elements.length) {
       console.error(
         '엘리먼트를 찾지 못했습니다. selector를 다시 확인해주세요.'
@@ -79,7 +45,7 @@ const urlReplaceKeyword = '{%}';
     }
 
     let directory = rootDirectory;
-    if (isEachDirectory) {
+    if (IS_NESTED_DIRECTORY) {
       directory += `/${zeroPaddedIndex}`;
       makeDirectory(directory);
     }
@@ -97,6 +63,10 @@ const urlReplaceKeyword = '{%}';
       })
     );
   }
-})().finally(() => {
-  process.exit();
-});
+})()
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(() => {
+    process.exit();
+  });

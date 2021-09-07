@@ -3,9 +3,7 @@ import * as cheerio from 'cheerio';
 import isRelativeUrl = require('is-relative-url');
 import * as puppeteer from 'puppeteer';
 
-export const getArguments = () => {
-  return process.argv.slice(2);
-};
+export const urlReplaceKeyword = '{%}';
 
 export const getContents = async (url: string) => {
   try {
@@ -68,10 +66,11 @@ export const getTime = (coupler = '-') => {
 };
 
 export class ZeroPad {
+  public static readonly DEFAULT_KEYWORD = '#';
   private size = 0;
   readonly NUMBER: number;
 
-  constructor(formatted: string, keyword = '#') {
+  constructor(formatted: string, keyword = ZeroPad.DEFAULT_KEYWORD) {
     this.size = formatted.length;
     this.NUMBER = Number(formatted.replaceAll(keyword, '0'));
   }
