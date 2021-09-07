@@ -1,5 +1,5 @@
 import Argument from '../src/Argument';
-import { urlReplaceKeyword } from '../src/util';
+import Range from '../src/Range';
 import ZeroPad from '../src/ZeroPad';
 
 describe('노드 인자 받아오기 모듈', () => {
@@ -21,12 +21,12 @@ describe('노드 인자 받아오기 모듈', () => {
   ]);
 
   test('다중 페이지', () => {
-    const expectedUrl = `https://dummy.com/${urlReplaceKeyword}`;
+    const expectedUrl = `https://dummy.com/${Range.REPLACE_KEYWORD}`;
     process.argv = [
       ...dummyArgv,
       ...mapKeyToExpected.entries(),
       '-u',
-      `https://dummy.com/${urlReplaceKeyword}`,
+      `https://dummy.com/${Range.REPLACE_KEYWORD}`,
       '-n',
     ].flat();
 

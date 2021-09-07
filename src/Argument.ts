@@ -1,5 +1,5 @@
 import * as commander from 'commander';
-import { urlReplaceKeyword } from './util';
+import Range from './Range';
 import ZeroPad from './ZeroPad';
 
 interface OptionValues {
@@ -32,7 +32,7 @@ export default class Argument {
     program
       .requiredOption<OptionValues['url']>(
         '-u, --url <url>',
-        `크롤링할 url\n여러 페이지 다운로드 시 치환 문자 "${urlReplaceKeyword}"를 포함합니다.\nex) https://dummy.dummy/${urlReplaceKeyword} -> https://dummy.dummy/{start}...https://dummy.dummy/{end}`,
+        `크롤링할 url\n여러 페이지 다운로드 시 치환 문자 "${Range.REPLACE_KEYWORD}"를 포함합니다.\nex) https://dummy.dummy/${Range.REPLACE_KEYWORD} -> https://dummy.dummy/{start}...https://dummy.dummy/{end}`,
         (url) => url
       )
       .requiredOption<OptionValues['query']>(
@@ -58,7 +58,7 @@ export default class Argument {
 
     const { url, query, range, nestedDirectory } = program.opts<OptionValues>();
 
-    const isLoop = url.includes(urlReplaceKeyword);
+    const isLoop = url.includes(Range.REPLACE_KEYWORD);
 
     this.URL = url;
     this.QUERY = query;

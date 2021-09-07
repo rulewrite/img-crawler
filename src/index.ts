@@ -4,25 +4,23 @@ import {
   getFilename,
   getTime,
   makeDirectory,
-  urlReplaceKeyword,
 } from './util';
 import * as fs from 'fs';
 import axios from 'axios';
 import Argument from './Argument';
 import Traveler from './Traveler';
+import Range from './Range';
 
 (async () => {
-  const { URL: url, QUERY, START, END, IS_NESTED_DIRECTORY } = new Argument();
-  const startNumber = START.NUMBER;
+  const { URL, QUERY, START, END, IS_NESTED_DIRECTORY } = new Argument();
 
+  const range = new Range(URL, START, END);
   const traveler = new Traveler();
   await traveler.launch();
 
   let rootDirectory = '';
-  for (let index = startNumber; index <= END; index++) {
-    const zeroPaddedIndex = START.get(index);
-    const currentUrl = url.replaceAll(urlReplaceKeyword, zeroPaddedIndex);
-    const { title, html } = await traveler.goto(currentUrl);
+  for (let { isFirst, index, zeroPaddedIndex, url } of range) {
+    const { title, html } = await traveler.goto(url);
 
     if (!html.length) {
       console.error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');
@@ -37,12 +35,12 @@ import Traveler from './Traveler';
       return;
     }
 
-    const urlInstance = new URL(currentUrl);
+    const urlInstance = new window.URL(url);
     const srcs = elements
       .map((element) => element.attr('src'))
       .map((src) => convertAbsoluteUrls(src, urlInstance));
 
-    if (index === startNumber) {
+    if (isFirst) {
       rootDirectory = `./${title}-${getTime()}`;
       makeDirectory(rootDirectory);
     }

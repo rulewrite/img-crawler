@@ -2,8 +2,6 @@ import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import isRelativeUrl = require('is-relative-url');
 
-export const urlReplaceKeyword = '{%}';
-
 export const getElements = (html: string, selector: string) => {
   const $ = cheerio.load(html);
   return $(selector)
