@@ -1,5 +1,6 @@
 import * as commander from 'commander';
-import { urlReplaceKeyword, ZeroPad } from './util';
+import { urlReplaceKeyword } from './util';
+import ZeroPad from './ZeroPad';
 
 interface OptionValues {
   url: Argument['URL'];

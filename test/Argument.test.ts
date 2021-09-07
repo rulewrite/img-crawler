@@ -1,5 +1,6 @@
 import Argument from '../src/Argument';
-import { ZeroPad, urlReplaceKeyword } from '../src/util';
+import { urlReplaceKeyword } from '../src/util';
+import ZeroPad from '../src/ZeroPad';
 
 describe('노드 인자 받아오기 모듈', () => {
   test('range 인자 파서', () => {
