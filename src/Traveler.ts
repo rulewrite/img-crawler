@@ -1,13 +1,16 @@
 import * as puppeteer from 'puppeteer';
 
 export default class Traveler {
+  private browser: puppeteer.Browser;
   private page: puppeteer.Page;
 
   constructor() {}
 
   async launch() {
-    const browser = await puppeteer.launch();
-    this.page = await browser.newPage();
+    this.close();
+
+    this.browser = await puppeteer.launch();
+    this.page = await this.browser.newPage();
   }
 
   async goto(url: string) {
@@ -27,5 +30,9 @@ export default class Traveler {
     } catch {
       return { title: '', html: '' };
     }
+  }
+
+  async close() {
+    await this.browser?.close();
   }
 }

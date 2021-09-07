@@ -35,4 +35,8 @@ describe('컨텐츠 받아오기', () => {
       ).resolves.toEqual(defaultContents);
     });
   });
+
+  afterAll(async () => {
+    await traveler.close();
+  });
 });
