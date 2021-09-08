@@ -20,7 +20,7 @@ export default class ImgSrcCollection {
     return `${origin}${path}/${src}`;
   }
 
-  map: typeof Array.prototype.map;
+  srcs: string[];
 
   constructor(url: string, html: string, selector: string) {
     const $ = cheerio.load(html);
@@ -36,10 +36,8 @@ export default class ImgSrcCollection {
     }
 
     const urlInstance = new URL(url);
-    const srcs = elements
+    this.srcs = elements
       .map((element) => element.attr('src'))
       .map((src) => ImgSrcCollection.convertAbsoluteUrls(src, urlInstance));
-
-    this.map = srcs.map;
   }
 }

@@ -37,7 +37,7 @@ import ImgSrcCollection from './ImgSrcCollection';
     const imgSrcCollection = new ImgSrcCollection(url, html, QUERY);
 
     await Promise.all(
-      imgSrcCollection.map(async (src, imgIndex) => {
+      imgSrcCollection.srcs.map(async (src, imgIndex) => {
         const response = await axios.get(src, {
           responseType: 'arraybuffer',
         });
