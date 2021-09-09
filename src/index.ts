@@ -1,10 +1,10 @@
-import { getFilename, getTime, makeDirectory } from './util';
-import * as fs from 'fs';
+import { getFilename } from './util';
 import axios from 'axios';
 import Argument from './Argument';
 import Traveler from './Traveler';
 import Range from './Range';
 import ImgSrcCollection from './ImgSrcCollection';
+import DirectoryStack from './DirectoryStack';
 
 (async () => {
   const { QUERY, ...argument } = new Argument();
@@ -19,35 +19,35 @@ import ImgSrcCollection from './ImgSrcCollection';
   const traveler = new Traveler();
   await traveler.launch();
 
-  let rootDirectory = '';
+  const directoryStack = new DirectoryStack();
   for (let { isFirst, index, zeroPaddedIndex, url } of range) {
     const { title, html } = await traveler.goto(url);
 
     if (isFirst) {
-      rootDirectory = `./${title}-${getTime()}`;
-      makeDirectory(rootDirectory);
+      directoryStack.push(title, true);
     }
 
-    let directory = rootDirectory;
     if (IS_NESTED_DIRECTORY) {
-      directory += `/${zeroPaddedIndex}`;
-      makeDirectory(directory);
+      directoryStack.push(String(zeroPaddedIndex));
     }
 
     const imgSrcCollection = new ImgSrcCollection(url, html, QUERY);
-
     await Promise.all(
       imgSrcCollection.srcs.map(async (src, imgIndex) => {
         const response = await axios.get(src, {
           responseType: 'arraybuffer',
         });
 
-        fs.writeFileSync(
-          `${directory}/${index}-${imgIndex + 1}-${getFilename(src)}`,
+        directoryStack.write(
+          `${index}-${imgIndex + 1}-${getFilename(src)}`,
           response.data
         );
       })
     );
+
+    if (IS_NESTED_DIRECTORY) {
+      directoryStack.pop();
+    }
   }
 })()
   .catch((error) => {

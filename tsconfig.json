@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "lib": ["ESNext", "dom"],
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "target": "ES5"
   }
 }
