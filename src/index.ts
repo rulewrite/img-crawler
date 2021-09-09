@@ -31,7 +31,7 @@ import DirectoryStack from './DirectoryStack';
       directoryStack.push(String(zeroPaddedIndex));
     }
 
-    const imgSrcCollection = new ImgSrcCollection(url, html, QUERY);
+    const imgSrcCollection = new ImgSrcCollection(new URL(url), html, QUERY);
     await Promise.all(
       imgSrcCollection.srcs.map(async (src, imgIndex) => {
         const response = await axios.get(src, {

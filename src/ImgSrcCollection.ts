@@ -22,7 +22,7 @@ export default class ImgSrcCollection {
 
   srcs: string[];
 
-  constructor(url: string, html: string, selector: string) {
+  constructor(url: URL, html: string, selector: string) {
     const $ = cheerio.load(html);
 
     const elements = $(selector)
@@ -35,9 +35,8 @@ export default class ImgSrcCollection {
       );
     }
 
-    const urlInstance = new URL(url);
     this.srcs = elements
       .map((element) => element.attr('src'))
-      .map((src) => ImgSrcCollection.convertAbsoluteUrls(src, urlInstance));
+      .map((src) => ImgSrcCollection.convertAbsoluteUrls(src, url));
   }
 }
