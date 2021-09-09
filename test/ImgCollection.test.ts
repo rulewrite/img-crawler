@@ -1,10 +1,10 @@
-import ImgSrcCollection from '../src/ImgSrcCollection';
+import ImgCollection from '../src/ImgCollection';
 
 test('elements 가져오기', () => {
   const expectedLength = 2;
   const urlString = 'https://dummy.dummy';
 
-  const imgSrcCollection = new ImgSrcCollection(
+  const imgCollection = new ImgCollection(
     new URL(urlString),
     `<html><body><div class="dummy">${new Array(expectedLength)
       .fill(null)
@@ -13,10 +13,16 @@ test('elements 가져오기', () => {
     '.dummy img'
   );
 
-  imgSrcCollection.srcs.map((src, index) => {
-    console.log(src);
+  imgCollection.imgs.map(({ src }, index) => {
     expect(src).toEqual(`${urlString}/${index}`);
   });
+});
+
+test('파일명 가져오기', () => {
+  const filename = 'file.name.jpg';
+  const url = `https://dummy.dumb/path/path/${filename}`;
+
+  expect((ImgCollection as any).getFilename(url)).toEqual(filename);
 });
 
 describe('절대 경로 반환하는 모듈', () => {
@@ -24,7 +30,7 @@ describe('절대 경로 반환하는 모듈', () => {
   const relativeUrl = 'relative';
   const expectedUrl = `${url.origin}/path1/${relativeUrl}`;
 
-  const convertAbsoluteUrls = (ImgSrcCollection as any).convertAbsoluteUrls;
+  const convertAbsoluteUrls = (ImgCollection as any).convertAbsoluteUrls;
 
   test('절대 경로는 그대로 반환', () => {
     expect(convertAbsoluteUrls(expectedUrl, url)).toEqual(expectedUrl);

@@ -1,9 +1,8 @@
-import { getFilename } from './util';
 import axios from 'axios';
 import Argument from './Argument';
 import Traveler from './Traveler';
 import Range from './Range';
-import ImgSrcCollection from './ImgSrcCollection';
+import ImgCollection from './ImgCollection';
 import DirectoryStack from './DirectoryStack';
 
 (async () => {
@@ -31,15 +30,15 @@ import DirectoryStack from './DirectoryStack';
       directoryStack.push(String(zeroPaddedIndex));
     }
 
-    const imgSrcCollection = new ImgSrcCollection(new URL(url), html, QUERY);
+    const imgCollection = new ImgCollection(new URL(url), html, QUERY);
     await Promise.all(
-      imgSrcCollection.srcs.map(async (src, imgIndex) => {
+      imgCollection.imgs.map(async ({ src, filename }, imgIndex) => {
         const response = await axios.get(src, {
           responseType: 'arraybuffer',
         });
 
         directoryStack.write(
-          `${index}-${imgIndex + 1}-${getFilename(src)}`,
+          `${index}-${imgIndex + 1}-${filename}`,
           response.data
         );
       })

@@ -1,7 +1,11 @@
 import isRelativeUrl = require('is-relative-url');
 import * as cheerio from 'cheerio';
 
-export default class ImgSrcCollection {
+export default class ImgCollection {
+  private static getFilename(path: string) {
+    return String(path.split('/').slice(-1));
+  }
+
   private static convertAbsoluteUrls(src: string, url: URL) {
     const { origin, pathname } = url;
     if (!isRelativeUrl(src)) {
@@ -20,7 +24,10 @@ export default class ImgSrcCollection {
     return `${origin}${path}/${src}`;
   }
 
-  srcs: string[];
+  imgs: {
+    src: string;
+    filename: string;
+  }[];
 
   constructor(url: URL, html: string, selector: string) {
     const $ = cheerio.load(html);
@@ -35,8 +42,11 @@ export default class ImgSrcCollection {
       );
     }
 
-    this.srcs = elements
+    this.imgs = elements
       .map((element) => element.attr('src'))
-      .map((src) => ImgSrcCollection.convertAbsoluteUrls(src, url));
+      .map((src) => ({
+        src: ImgCollection.convertAbsoluteUrls(src, url),
+        filename: ImgCollection.getFilename(src),
+      }));
   }
 }
