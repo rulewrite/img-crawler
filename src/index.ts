@@ -19,7 +19,7 @@ import DirectoryStack from './DirectoryStack';
   await traveler.launch();
 
   const directoryStack = new DirectoryStack();
-  for (let { isFirst, index, zeroPaddedIndex, url } of range) {
+  for (let { isFirst, current, zeroPaddedIndex, url } of range) {
     const { title, html } = await traveler.goto(url);
 
     if (isFirst) {
@@ -38,7 +38,7 @@ import DirectoryStack from './DirectoryStack';
         });
 
         directoryStack.write(
-          `${index}-${imgIndex + 1}-${filename}`,
+          `${current}-${imgIndex + 1}-${filename}`,
           response.data
         );
       })

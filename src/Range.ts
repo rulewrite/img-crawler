@@ -43,12 +43,12 @@ export default class Range {
   *[Symbol.iterator]() {
     const { URL, START, END } = this;
 
-    for (let index = START.NUMBER; index <= END; index++) {
-      const zeroPaddedIndex = START.get(index);
+    for (let current = START.NUMBER; current <= END; current++) {
+      const zeroPaddedIndex = START.get(current);
 
       yield {
-        isFirst: index === START.NUMBER,
-        index,
+        isFirst: current === START.NUMBER,
+        current,
         zeroPaddedIndex,
         url: URL.replaceAll(Range.REPLACE_KEYWORD, zeroPaddedIndex),
       };
