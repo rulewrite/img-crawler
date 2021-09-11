@@ -31,18 +31,16 @@ import DirectoryStack from './DirectoryStack';
     }
 
     const imgCollection = new ImgCollection(new URL(url), html, QUERY);
-    await Promise.all(
-      imgCollection.imgs.map(async ({ src, filename }, imgIndex) => {
-        const response = await axios.get(src, {
-          responseType: 'arraybuffer',
-        });
+    for (let { src, filename, index } of imgCollection) {
+      const response = await axios.get(src, {
+        responseType: 'arraybuffer',
+      });
 
-        directoryStack.write(
-          `${current}-${imgIndex + 1}-${filename}`,
-          response.data
-        );
-      })
-    );
+      directoryStack.write(
+        `${current}-${index + 1}-${filename}`,
+        response.data
+      );
+    }
 
     if (IS_NESTED_DIRECTORY) {
       directoryStack.pop();

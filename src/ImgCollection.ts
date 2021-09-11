@@ -24,7 +24,7 @@ export default class ImgCollection {
     return `${origin}${path}/${src}`;
   }
 
-  imgs: {
+  private imgs: {
     src: string;
     filename: string;
   }[];
@@ -48,5 +48,11 @@ export default class ImgCollection {
         src: ImgCollection.convertAbsoluteUrls(src, url),
         filename: ImgCollection.getFilename(src),
       }));
+  }
+
+  *[Symbol.iterator]() {
+    for (const [index, img] of this.imgs.entries()) {
+      yield { ...img, index };
+    }
   }
 }
