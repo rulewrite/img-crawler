@@ -17,21 +17,17 @@ describe('성공', () => {
 
 describe('실패', () => {
   const notValidUrlSegment = `dummy-${Date.now()}`;
-  const defaultContents = {
-    title: '',
-    html: '',
-  };
 
   test('존재하지 않는 사이트', async () => {
     await expect(
       traveler.goto(`https://${notValidUrlSegment}.com`)
-    ).resolves.toEqual(defaultContents);
+    ).rejects.toThrow();
   });
 
   test('존재하지 않는 페이지', async () => {
     await expect(
       traveler.goto(`${validUrl}/${notValidUrlSegment}`)
-    ).resolves.toEqual(defaultContents);
+    ).rejects.toThrow();
   });
 });
 

@@ -37,7 +37,7 @@ export default class Traveler {
     await this.browser?.close();
   }
 
-  throwError() {
+  private throwError() {
     throw new Error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');
   }
 }
