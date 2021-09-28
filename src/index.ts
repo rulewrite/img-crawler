@@ -20,31 +20,33 @@ import DirectoryStack from './DirectoryStack';
 
   const directoryStack = new DirectoryStack();
   for (let { isFirst, current, zeroPaddedIndex, url } of range) {
-    const { title, html } = await traveler.goto(url);
+    try {
+      const { title, html } = await traveler.goto(url);
 
-    if (isFirst) {
-      directoryStack.push(title, true);
-    }
+      if (isFirst) {
+        directoryStack.push(title, true);
+      }
 
-    if (IS_NESTED_DIRECTORY) {
-      directoryStack.push(String(zeroPaddedIndex));
-    }
+      if (IS_NESTED_DIRECTORY) {
+        directoryStack.push(String(zeroPaddedIndex));
+      }
 
-    const imgCollection = new ImgCollection(new URL(url), html, QUERY);
-    for (let { src, filename, index } of imgCollection) {
-      const response = await axios.get(src, {
-        responseType: 'arraybuffer',
-      });
+      const imgCollection = new ImgCollection(new URL(url), html, QUERY);
+      for (let { src, filename, index } of imgCollection) {
+        const response = await axios.get(src, {
+          responseType: 'arraybuffer',
+        });
 
-      directoryStack.write(
-        `${current}-${index + 1}-${filename}`,
-        response.data
-      );
-    }
+        directoryStack.write(
+          `${current}-${index + 1}-${filename}`,
+          response.data
+        );
+      }
 
-    if (IS_NESTED_DIRECTORY) {
-      directoryStack.pop();
-    }
+      if (IS_NESTED_DIRECTORY) {
+        directoryStack.pop();
+      }
+    } catch {}
   }
 })()
   .catch((error) => {
