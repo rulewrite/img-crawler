@@ -1,6 +1,6 @@
 import ImgCollection from '../src/ImgCollection';
 
-test('html에서 이미지 태그들 파싱 하기', () => {
+describe('html에서 이미지 태그들 파싱', () => {
   const expectedLength = 2;
   const urlString = 'https://dummy.dummy';
 
@@ -13,9 +13,21 @@ test('html에서 이미지 태그들 파싱 하기', () => {
     '.dummy img'
   );
 
-  for (let { src, index } of imgCollection) {
-    expect(src).toEqual(`${urlString}/${index}`);
-  }
+  test('이미지 태그 갯수', () => {
+    expect(imgCollection.length).toEqual(expectedLength);
+  });
+
+  test('src 파싱', () => {
+    (imgCollection as any).imgs.forEach(({ src }, index) => {
+      expect(src).toEqual(`${urlString}/${index}`);
+    });
+  });
+
+  test('iterator', async () => {
+    for await (let { filename, index } of imgCollection) {
+      expect(filename).toEqual(String(index));
+    }
+  });
 });
 
 test('파일명 가져오기', () => {

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Argument from './Argument';
 import Traveler from './Traveler';
 import Range from './Range';
@@ -32,15 +31,8 @@ import DirectoryStack from './DirectoryStack';
       }
 
       const imgCollection = new ImgCollection(new URL(url), html, QUERY);
-      for (let { src, filename, index } of imgCollection) {
-        const response = await axios.get(src, {
-          responseType: 'arraybuffer',
-        });
-
-        directoryStack.write(
-          `${current}-${index + 1}-${filename}`,
-          response.data
-        );
+      for await (let { index, filename, data } of imgCollection) {
+        directoryStack.write(`${current}-${index + 1}-${filename}`, data);
       }
 
       if (IS_NESTED_DIRECTORY) {

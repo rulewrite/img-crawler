@@ -1,5 +1,6 @@
 import isRelativeUrl = require('is-relative-url');
 import * as cheerio from 'cheerio';
+import axios from 'axios';
 
 export default class ImgCollection {
   private static getFilename(path: string) {
@@ -29,6 +30,10 @@ export default class ImgCollection {
     filename: string;
   }[];
 
+  get length(): number {
+    return this.imgs.length;
+  }
+
   constructor(url: URL, html: string, selector: string) {
     const $ = cheerio.load(html);
 
@@ -50,9 +55,19 @@ export default class ImgCollection {
       }));
   }
 
-  *[Symbol.iterator]() {
+  async *[Symbol.asyncIterator]() {
     for (const [index, img] of this.imgs.entries()) {
-      yield { ...img, index };
+      const { src, filename } = img;
+
+      try {
+        const response = await axios.get<string>(src, {
+          responseType: 'arraybuffer',
+        });
+
+        yield { index, filename, data: response.data };
+      } catch {
+        yield { index, filename, data: null };
+      }
     }
   }
 }
