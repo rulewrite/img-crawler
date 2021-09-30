@@ -19,12 +19,12 @@ export default class Traveler {
     const isOk = response.ok();
 
     if (!isOk) {
-      this.throwError();
+      throw new Error('url 접속에 실패했습니다.');
     }
 
     const html = await page.content();
     if (!html.length) {
-      this.throwError();
+      throw new Error('컨텐츠가 없습니다.');
     }
 
     return {
@@ -35,9 +35,5 @@ export default class Traveler {
 
   async close() {
     await this.browser?.close();
-  }
-
-  private throwError() {
-    throw new Error('응답받은 컨텐츠가 없습니다. url을 다시 확인해주세요.');
   }
 }
