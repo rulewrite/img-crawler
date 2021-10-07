@@ -18,7 +18,7 @@ export default class DirectoryStack {
 
   private stack: string[] = ['.'];
 
-  private get paths(): string {
+  private get paths() {
     return this.stack.join('/');
   }
 

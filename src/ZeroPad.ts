@@ -9,7 +9,7 @@ export default class ZeroPad {
     this.NUMBER = Number(formatted.replaceAll(ZeroPad.PLACEHOLDER, '0'));
   }
 
-  get(num: number): string {
+  get(num: number) {
     let numString = num.toString();
     while (numString.length < this.size) numString = '0' + numString;
     return numString;

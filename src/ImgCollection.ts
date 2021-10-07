@@ -30,7 +30,7 @@ export default class ImgCollection {
     filename: string;
   }[];
 
-  get length(): number {
+  get length() {
     return this.imgs.length;
   }
 
