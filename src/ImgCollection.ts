@@ -59,15 +59,11 @@ export default class ImgCollection {
     for (const [index, img] of this.imgs.entries()) {
       const { src, filename } = img;
 
-      try {
-        const response = await axios.get<string>(src, {
-          responseType: 'arraybuffer',
-        });
+      const response = await axios.get<string>(src, {
+        responseType: 'arraybuffer',
+      });
 
-        yield { index, filename, data: response.data };
-      } catch {
-        yield { index, filename, data: null };
-      }
+      yield { index, filename, data: response.data };
     }
   }
 }
