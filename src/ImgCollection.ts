@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default class ImgCollection {
   private static getFilename(path: string) {
-    return String(path.split('/').slice(-1));
+    return String(path.split('/').slice(-1)).split('?')[0];
   }
 
   private static convertAbsoluteUrls(src: string, url: URL) {
